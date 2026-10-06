@@ -9,10 +9,12 @@ class Clienteadmin(admin.ModelAdmin):
 
 @admin.register(Venta)
 class VentaAdmin(admin.ModelAdmin):
-    list_display =("id", "fecha", "total", "metodo_pago", "Cliente")
+    list_display =("id", "fecha", "total_clp", "metodo_pago", "Cliente")
     list_filter =("metodo_pago","fecha")
     search_fields =("metodo_pago", "cliente__nombre")
 
     @admin.display(description="Total (CLP)", ordering="total")
     def total_clp(self, obj):
-        return f"${obj.total:,.0f}".replace(",",".")
+        if obj.total is not None:
+            return f"${obj.total:,.0f}".replace(",",".")
+        return "$0"
